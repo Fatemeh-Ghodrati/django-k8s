@@ -26,14 +26,14 @@ spec:
           - containerPort: 8000
         livenessProbe:
           httpGet:
-            path: /api/liveness/
+            path: /liveness/
             port: 8000
             initialDelaySeconds: 10  
             periodSeconds: 5         
             failureThreshold: 3
         readinessProbe:
           httpGet:
-            path: /api/readiness/
+            path: /readiness/
             port: 8000
             initialDelaySeconds: 5  
             periodSeconds: 3        

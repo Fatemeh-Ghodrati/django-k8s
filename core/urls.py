@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from users import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('', include('django_prometheus.urls')),
+    path('liveness/', views.LivenessProbeView.as_view(), name='liveness_probe'),
+    path('readiness/', views.ReadinessProbeView.as_view(), name='readiness_probe'),
 ]
