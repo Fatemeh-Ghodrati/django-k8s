@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'users',
     'django_prometheus',
+    'health'
 ]
 
 MIDDLEWARE = [

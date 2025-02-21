@@ -3,11 +3,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from .serializers import UserSerializer, UserSummarySerializer
 from rest_framework.response import Response
-from django.http import JsonResponse
 from .models import User
 from prometheus_client import Counter, Gauge
 import psutil
-from django.db import connections
 
 REQUEST_200_COUNT = Counter('http_200_responses_total', 'Total number of successful (200) responses')
 REQUEST_404_COUNT = Counter('http_404_responses_total', 'Total number of not found (404) responses')
@@ -15,26 +13,6 @@ CPU_USAGE = Gauge('cpu_usage_percent', 'CPU usage percentage')
 MEMORY_USAGE = Gauge('memory_usage_percent', 'Memory usage percentage')
 
 logger = logging.getLogger('users')
-
-class LivenessProbeView(APIView):
-    def get(self, request):
-        return JsonResponse({"status": "alive"}, status=200)
-    
-
-class ReadinessProbeView(APIView):
-    def get(self, request):
-        try:
-            connections["default"].cursor()
-        except Exception as e:
-            return JsonResponse({"status": "unready", "error": str(e)}, status=503)
-
-        memory_usage = psutil.virtual_memory().percent
-        cpu_usage = psutil.cpu_percent(interval=1)
-
-        if memory_usage > 90 or cpu_usage > 90:
-            return JsonResponse({"status": "unready", "cpu": cpu_usage, "memory": memory_usage}, status=503)
-
-        return JsonResponse({"status": "ready"}, status=200)
 
 class USerCreateView(APIView):
     def post(self, request):
