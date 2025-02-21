@@ -1,0 +1,2 @@
+ERROR 2025-02-19 18:27:34,942 views User creation failed: {'username': [ErrorDetail(string='user with this username already exists.', code='unique')]}
+ERROR 2025-02-19 18:27:52,984 views User with id 7 not found

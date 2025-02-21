@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+  namespace: django-app
+data:
+  DB_ENGINE: "django.db.backends.mysql"
+  DB_HOST: "mysql"
+  DB_PORT: "3306"
+  DEBUG: "True"
+  LOG_LEVEL: "DEBUG"

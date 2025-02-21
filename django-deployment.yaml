@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django
+  namespace: django-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      containers:
+      - name: django
+        image: fatemehghodratirpg/my-django-app:latest
+        envFrom:
+          - configMapRef:
+              name: django-config
+          - secretRef:
+              name: django-secret
+        command: ["sh", "-c", "ls -l /code/ && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+        ports:
+          - containerPort: 8000
+        volumeMounts:
+          - name: app-storage
+            mountPath: /code
+      volumes:
+        - name: app-storage
+          emptyDir: {}
