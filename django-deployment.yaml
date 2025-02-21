@@ -24,6 +24,20 @@ spec:
         command: ["sh", "-c", "ls -l /code/ && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
         ports:
           - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /api/liveness/
+            port: 8000
+            initialDelaySeconds: 10  
+            periodSeconds: 5         
+            failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /api/readiness/
+            port: 8000
+            initialDelaySeconds: 5  
+            periodSeconds: 3        
+            failureThreshold: 3 
         volumeMounts:
           - name: app-storage
             mountPath: /code
